@@ -60,7 +60,7 @@ public class VaadinUI extends UI {
 		
 		setContent(mainLayout);
 		
-		LandingPageView landingPageView = new LandingPageView(userRepository, topicRepository,commentRepository,topicEditor);
+		LandingPageView landingPageView = new LandingPageView(userRepository, topicRepository,commentRepository);
 		
 		NewTopicView newTopicView = new NewTopicView(userRepository, topicRepository);
 		

@@ -5,6 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/** 
+ * Main class to start the application
+ * 
+ * 
+ * @author slauriano
+ * 
+ * 
+ * */
 @SpringBootApplication
 public class SampleForumApplication {
 	

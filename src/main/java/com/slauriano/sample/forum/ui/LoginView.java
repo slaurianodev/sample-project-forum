@@ -22,9 +22,6 @@ import com.vaadin.ui.TextField;
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends CustomComponent implements View{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	public static final String VIEW_NAME = "login";
@@ -32,8 +29,6 @@ public class LoginView extends CustomComponent implements View{
 	private final UserRepository userRepository;
 	
 	public User user;
-	
-	//private Navigator navigator;
 	
 	TextField userName = new TextField("username");
 	PasswordField password = new PasswordField("password");
@@ -45,9 +40,6 @@ public class LoginView extends CustomComponent implements View{
 	@Autowired
 	public LoginView(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		//this.navigator =  getUI().getNavigator();
-		
-		
 		
 		// Create a panel with a caption.
 		Panel loginPanel = new Panel("Login");
@@ -56,12 +48,13 @@ public class LoginView extends CustomComponent implements View{
 		
 		// Create a layout inside the panel
 		final FormLayout loginLayout = new FormLayout();
+
 		// Add some components inside the layout
 		loginLayout.addComponent(userName);
 		loginLayout.addComponent(password);
 		loginLayout.addComponent(login);
 		setSizeFull();
-//		setSizeUndefined();
+
 		// Have some margin around it.
 		loginLayout.setMargin(true);
 		
@@ -71,12 +64,10 @@ public class LoginView extends CustomComponent implements View{
 		
 		
 		// Set the layout as the root layout of the panel
-				
 		loginPanel.setContent(loginLayout);
 		
 		setCompositionRoot(loginPanel);
-		
-		
+				
 
 		// login button onclick event implementation
 		login.addClickListener(new ClickListener() {
@@ -85,24 +76,21 @@ public class LoginView extends CustomComponent implements View{
 			public void buttonClick(ClickEvent event) {
 				String userNameVal = userName.getValue();
 				String passVal = password.getValue();
+				
+				// recover the user data from database
 				User loggedUser = userRepository.findByUserNameAndPassword(userNameVal, passVal);
-				System.out.println("-----" + loggedUser.getUserName() + loggedUser.getPassword()+ "-----");
-				VaadinSession.getCurrent().setAttribute("userId", loggedUser.getId());
-				System.out.println(String.format("USER ID: %s",VaadinSession.getCurrent().getAttribute("userId")));
-				getUI().getNavigator().navigateTo(LandingPageView.VIEW_NAME);
-	
+
+				if(loggedUser != null) {
+					// save the id of the current user logged in the app
+					VaadinSession.getCurrent().setAttribute("userId", loggedUser.getId());
+					getUI().getNavigator().navigateTo(LandingPageView.VIEW_NAME);					
+				}
 			}
 		});
 		
-		
-		
 	}
-
 
 	@Override
-	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void enter(ViewChangeEvent event) {}
 
 }

@@ -22,60 +22,63 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-
+/**
+ * Class of the main page of the app 
+ * 
+ * @author slauriano
+ * 
+ */
 @SpringView(name = LandingPageView.VIEW_NAME)
 public class LandingPageView extends CustomComponent implements View {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public static final String VIEW_NAME = "home";
 
+	// components of the view
 	final Grid<Topic> grid;
-
 	final TextField filter;
-
 	private final Button addNewBtn;
-
-	private final UserRepository userRepository;
-
-	private final TopicRepository topicRepository;
-
-	private final CommentRepository commentRepository;
-
-	private final TopicEditor editor;
-
-	private Navigator navigator;
-	
 	private final Button logout;
+	
+	// Repositories to access data in database
+	private final UserRepository userRepository;
+	private final TopicRepository topicRepository;
+	private final CommentRepository commentRepository;
+	
+	// navigator to switch the views
+	private Navigator navigator;
 
 	@Autowired
 	public LandingPageView(UserRepository userRepository, TopicRepository topicRepository,
-			CommentRepository commentRepository, TopicEditor editor) {
+			CommentRepository commentRepository) {
 
 		this.userRepository = userRepository;
 		this.topicRepository = topicRepository;
 		this.commentRepository = commentRepository;
-		this.editor = editor;
 
+		// Initialize the grid to show the topic data
 		this.grid = new Grid<>(Topic.class);
+		
+		// Initialize the components with actions in the page
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New topic", FontAwesome.PLUS);
 		this.logout = new Button("Logout");
 
-		// build layout
+		// build layout of the actions
 		HorizontalLayout logoutAction = new HorizontalLayout(logout);
-		
 		HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
-		VerticalLayout mainLayout = new VerticalLayout(logoutAction,actions, grid, editor);
+		
+		// build the main layout and set the components into
+		VerticalLayout mainLayout = new VerticalLayout(logoutAction,actions, grid);
 		mainLayout.setComponentAlignment(logoutAction, Alignment.TOP_RIGHT);
 
+		// fill settings of the grid component in the main layout
 		grid.setHeightByRows(10);
 		grid.setWidth("80%");
 		grid.setColumns("title", "creationDate");
 
+		// item selected onclick event implementation
 		grid.asSingleSelect().addValueChangeListener(e -> {
 
 			PageTopicView pageTopicView = new PageTopicView(userRepository, topicRepository, commentRepository,
@@ -87,12 +90,13 @@ public class LandingPageView extends CustomComponent implements View {
 
 		});
 
+		// fill settings of the filter component in the main layout
 		filter.setPlaceholder("Filter by topic title");
-
 		filter.setValueChangeMode(ValueChangeMode.LAZY);
 		filter.addValueChangeListener(e -> listTopics(e.getValue()));
 		filter.setWidth("50%");
 
+		// new button onclick event implementation
 		addNewBtn.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -100,6 +104,7 @@ public class LandingPageView extends CustomComponent implements View {
 			}
 		});
 		
+		// logout button on click event implementation
 		logout.addClickListener(new ClickListener() {
 			
 			@Override
@@ -108,12 +113,22 @@ public class LandingPageView extends CustomComponent implements View {
 			}
 		});
 
+		// set the main layout as the root layout
 		setCompositionRoot(mainLayout);
 
+		// list all topics to fill the grid		
 		listTopics(null);
 
 	}
 
+	/**
+	 * List topics to fill the grid
+	 * 
+	 * @param filterText - the parameter to be used in the query
+	 * 
+	 * @author slauriano
+	 * 
+	 * */	
 	void listTopics(String filterText) {
 		if (StringUtils.isEmpty(filterText)) {
 			grid.setItems(topicRepository.findAll());
