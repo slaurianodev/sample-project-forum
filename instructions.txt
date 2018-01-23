@@ -8,12 +8,12 @@ $ ./mvnw clean
 $ ./mvnw install
 $ java -jar target/sample-forum-app-0.0.1.war
 
-The will run in the http://localhost:8080
+The app will run at this address -> http://localhost:8080
 
 To access the app, use the following logins:
-uuser: admin
+user: admin
 password: admin
-ser: sergio
+user: sergio
 password: sergio123
 
 Have fun! :-)
