@@ -28,18 +28,15 @@ public class NewCommentView extends CustomComponent implements  View{
 	
 	public static final String VIEW_NAME = "new_comment";
 	
+	// Repositories to access data in database
 	private final UserRepository userRepository;
-	
 	private final TopicRepository topicRepository;
-	
 	private final CommentRepository commentRepository;
-	
+		
+	// components of the view
 	private TextArea description;
-	
-	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
 	Button cancel = new Button("Cancel");
-	
 	CssLayout actions = new CssLayout(save, cancel);
 	
 	private Comment comment;
@@ -52,9 +49,11 @@ public class NewCommentView extends CustomComponent implements  View{
 		
 		VerticalLayout mainLayout = new VerticalLayout();
 		
+		// setup and size the component to show in the view
 		description = new TextArea("Description");
 		description.setWidth("80%");
 		
+		// save button onclick event implementation
 		save.addClickListener(new ClickListener() {
 			
 			@Override
@@ -67,6 +66,7 @@ public class NewCommentView extends CustomComponent implements  View{
 			}
 		});
 		
+		// cancel button onclick event implementation
 		cancel.addClickListener(new ClickListener() {
 			
 			@Override
@@ -75,10 +75,12 @@ public class NewCommentView extends CustomComponent implements  View{
 			}
 		});
 		
+		// setting components into the main layout
 		mainLayout.addComponents(description,actions);
 		mainLayout.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
 		mainLayout.setComponentAlignment(actions, Alignment.MIDDLE_CENTER);
 		
+		// set the main layout as the root layout
 		setCompositionRoot(mainLayout);
 	}
 

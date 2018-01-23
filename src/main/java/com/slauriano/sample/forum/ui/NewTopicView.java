@@ -29,20 +29,18 @@ public class NewTopicView extends CustomComponent implements  View{
 	
 	public static final String VIEW_NAME = "new_topic";
 	
+	// Repositories to access data in database
 	private final UserRepository userRepository;
-	
 	private final TopicRepository topicRepository;
 	
-	/* Action buttons */
+	// components of the view
 	Button save = new Button("Save", FontAwesome.SAVE);
 	Button cancel = new Button("Cancel");
-	
 	CssLayout actions = new CssLayout(save, cancel);
-
-	private Topic topic;
-	
 	private TextField title;
 	private TextArea description;
+	
+	private Topic topic;
 	
 	@Autowired
 	public NewTopicView(UserRepository userRepository, TopicRepository topicRepository) {
@@ -52,12 +50,13 @@ public class NewTopicView extends CustomComponent implements  View{
 		
 		VerticalLayout mainLayout = new VerticalLayout();
 		
-		/* Fields to create a new Topic */
+		// Fields to create a new Topic
 		title = new TextField("Title");
 		title.setWidth("80%");
 		description = new TextArea("Description");
 		description.setWidth("80%");
 				
+		// save button onclick event implementation		
 		save.addClickListener(new ClickListener() {
 			
 			@Override
@@ -70,6 +69,7 @@ public class NewTopicView extends CustomComponent implements  View{
 			}
 		});
 		
+		// cancel button onclick event implementation
 		cancel.addClickListener(new ClickListener() {
 			
 			@Override
@@ -78,11 +78,13 @@ public class NewTopicView extends CustomComponent implements  View{
 			}
 		});
 		
+		// setting components into the main layout
 		mainLayout.addComponents(title,description,actions);
 		mainLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
 		mainLayout.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
 		mainLayout.setComponentAlignment(actions, Alignment.MIDDLE_CENTER);
 		
+		// set the main layout as the root layout
 		setCompositionRoot(mainLayout);
 	}
 

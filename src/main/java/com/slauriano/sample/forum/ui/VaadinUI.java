@@ -26,42 +26,36 @@ public class VaadinUI extends UI {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	// Repositories to access data in database
 	@Autowired
 	private final UserRepository userRepository;
-	
 	@Autowired
 	private final TopicRepository topicRepository;
-	
 	@Autowired
 	private final CommentRepository commentRepository;
 	
-	@Autowired
-	private final TopicEditor topicEditor;
-	
+	// navigator to switch the views
 	private Navigator navigator;
 	
+	// main layout of the page
 	VerticalLayout mainLayout;
 
 	@Override
 	protected void init(VaadinRequest request) {
 		// build layout
-		
 		mainLayout = new VerticalLayout();
 		
-		addHeaderLeabel();
-		
+		// create and add the view to the main layout
 		LoginView loginView = new LoginView(userRepository);
 		
 		mainLayout.addComponent(loginView);
-		
-		mainLayout.setSizeFull();
 		
 		mainLayout.setComponentAlignment(loginView, Alignment.MIDDLE_CENTER);
 		
 		setContent(mainLayout);
 		
+		// creating other views to use in the navigator in the future
 		LandingPageView landingPageView = new LandingPageView(userRepository, topicRepository,commentRepository);
-		
 		NewTopicView newTopicView = new NewTopicView(userRepository, topicRepository);
 		
 		// build navigator
@@ -74,24 +68,10 @@ public class VaadinUI extends UI {
 		
 	}
 	
-	private void addHeaderLeabel(){
-		HorizontalLayout header = new HorizontalLayout();
-		
-		Label headerLabel = new Label("Forum App");
-		headerLabel.addStyleName(ValoTheme.LABEL_H1);
-		
-		header.setSizeFull();
-		header.addComponent(headerLabel);
-		
-		mainLayout.addComponent(header);
-	}
-	
 	@Autowired
-	public VaadinUI(UserRepository userRepository, TopicRepository topicRepository, CommentRepository commentRepository,TopicEditor topicEditor) {
+	public VaadinUI(UserRepository userRepository, TopicRepository topicRepository, CommentRepository commentRepository) {
 		this.userRepository = userRepository;
 		this.topicRepository = topicRepository;
-		this.commentRepository = commentRepository;
-		this.topicEditor = topicEditor;
-		 
+		this.commentRepository = commentRepository;		 
 	}
 }

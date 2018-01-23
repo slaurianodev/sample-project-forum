@@ -34,14 +34,14 @@ public class PageTopicView extends CustomComponent implements View {
 
 	public static final String VIEW_NAME = "topic_page";
 
+	// Repositories to access data in database
 	private final UserRepository userRepository;
-
 	private final TopicRepository topicRepository;
-
 	private final CommentRepository commentRepository;
 
 	private Topic topic;
 
+	// navigator to switch the views
 	private Navigator navigator;
 
 	@Autowired
@@ -51,6 +51,7 @@ public class PageTopicView extends CustomComponent implements View {
 		this.topicRepository = topicRepository;
 		this.commentRepository = commentRepository;
 		
+		// settings for scroll the data in the page
 		this.addStyleName("v-scrollable");
 		this.setHeight("100%");
 		this.setWidth("100%");
@@ -59,6 +60,8 @@ public class PageTopicView extends CustomComponent implements View {
 
 		getTopic(topic);
 
+		
+		// setting the components
 		Label titleTopic = new Label(topic.getTitle());
 		titleTopic.addStyleName(ValoTheme.LABEL_H1);
 
@@ -69,6 +72,7 @@ public class PageTopicView extends CustomComponent implements View {
 		Button newCommentBtn = new Button("New comment", FontAwesome.PLUS);
 		HorizontalLayout actions = new HorizontalLayout(newCommentBtn, backButton);
 
+		// layout to show all the topics in the page		
 		GridLayout gridTopicLayout = new GridLayout();
 		gridTopicLayout.setMargin(true);
 		gridTopicLayout.setWidth("80%");
@@ -77,6 +81,7 @@ public class PageTopicView extends CustomComponent implements View {
 		gridTopicLayout.addComponent(descriptionTopic);
 		gridTopicLayout.addComponent(dateTopic);
 
+		// layout to show all the comments linked with the topic
 		GridLayout gridCommentLayout = new GridLayout();
 
 		getComments(gridCommentLayout, topic);
@@ -115,6 +120,14 @@ public class PageTopicView extends CustomComponent implements View {
 		return dateFormat.format(date);
 	}
 
+	/** 
+	 * Recovers the topic from database to show in the page
+	 * 
+	 * @param Topic topic - the Topic object selected before
+	 * 
+	 * @author slauriano
+	 * 
+	 * */
 	public void getTopic(Topic topicSelected) {
 		final boolean persisted = topicSelected.getId() != null;
 		if (persisted) {
@@ -123,6 +136,15 @@ public class PageTopicView extends CustomComponent implements View {
 		}
 	}
 
+	/** 
+	 * Recovers all the comments from database linked whit a specific Topic
+	 * 
+	 * @param GridLayout gridLayout - the component layout that will be used to bind the comments data
+	 * @param Topic topic - the topic object selected before
+	 * 
+	 * @author slauriano
+	 * 
+	 * */
 	void getComments(GridLayout gridLayout, Topic topic) {
 		List<Comment> comments = commentRepository.findCommentsByTopic(topic);
 		for (Comment c : comments) {

@@ -30,6 +30,7 @@ public class LoginView extends CustomComponent implements View{
 	
 	public User user;
 	
+	// components of the view
 	TextField userName = new TextField("username");
 	PasswordField password = new PasswordField("password");
 	Button login = new Button("Login");
